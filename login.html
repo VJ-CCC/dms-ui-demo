@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DMS Portal — Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --blue:#1A73E8; --blue-dark:#185ABC;
+  --g50:#F9FAFB; --g100:#F1F3F4; --g200:#E5E7EB; --g300:#DADCE0;
+  --g500:#6B7280; --g600:#5F6368; --g800:#1F2937; --g900:#202124;
+  --danger:#D93025;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;height:100%;}
+body{
+  font-family:'Roboto',system-ui,sans-serif;color:var(--g800);
+  background:#EEF1F4;-webkit-font-smoothing:antialiased;
+  display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;
+}
+.login-card{
+  width:425px;max-width:100%;background:#fff;border-radius:14px;
+  box-shadow:0 10px 40px rgba(60,64,67,.12),0 2px 8px rgba(60,64,67,.06);
+  padding:34px 32px 26px;
+}
+.brand-mark{
+  width:48px;height:48px;border-radius:12px;background:var(--blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
+}
+.title{margin:0;text-align:center;font-size:22px;font-weight:700;color:var(--g900);letter-spacing:-.01em;}
+.subtitle{margin:7px 0 26px;text-align:center;font-size:12px;color:var(--g500);}
+.field{margin-bottom:16px;}
+.field-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--g600);margin-bottom:7px;}
+.field-input{
+  width:100%;height:42px;border:1px solid var(--g300);border-radius:7px;
+  padding:0 13px;font-size:14px;font-family:inherit;color:var(--g900);
+  outline:none;transition:border-color .12s,box-shadow .12s;background:#fff;
+}
+.field-input::placeholder{color:#9AA0A6;}
+.field-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,115,232,.15);}
+.field-input.err{border-color:var(--danger);}
+.field-input.err:focus{box-shadow:0 0 0 3px rgba(217,48,37,.15);}
+.field-err{display:none;margin-top:6px;font-size:12px;color:var(--danger);}
+.field-err.show{display:block;}
+.row-between{display:flex;align-items:center;justify-content:space-between;margin:4px 0 20px;}
+.stay{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--g600);cursor:pointer;user-select:none;white-space:nowrap;}
+.stay input{width:16px;height:16px;accent-color:var(--blue);cursor:pointer;}
+.forgot{font-size:13px;font-weight:500;color:var(--blue);text-decoration:none;white-space:nowrap;}
+.forgot:hover{text-decoration:underline;}
+.signin-btn{
+  width:100%;height:46px;border:none;border-radius:7px;background:var(--blue);color:#fff;
+  font-family:inherit;font-size:14px;font-weight:700;letter-spacing:.06em;cursor:pointer;
+  transition:background .12s;
+}
+.signin-btn:hover{background:var(--blue-dark);}
+.signin-btn:active{transform:translateY(1px);}
+.foot{margin-top:24px;text-align:center;font-size:11px;line-height:1.7;color:#A8ADB3;}
+</style>
+</head>
+<body>
+<form class="login-card" id="login-form" novalidate>
+  <div class="brand-mark">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v2H8v-2zm0 4h8v2H8v-2z" /></svg>
+  </div>
+  <h1 class="title">DMS Portal</h1>
+  <p class="subtitle">Document Management System</p>
+
+  <div class="field">
+    <label class="field-label" for="username">Username</label>
+    <input class="field-input" id="username" type="text" autocomplete="username" placeholder="administrator@corp.local" />
+    <div class="field-err" id="username-err">Username is required</div>
+  </div>
+
+  <div class="field">
+    <label class="field-label" for="password">Password</label>
+    <input class="field-input" id="password" type="password" autocomplete="current-password" placeholder="••••••••••••" />
+    <div class="field-err" id="password-err">Password is required</div>
+  </div>
+
+  <div class="row-between">
+    <label class="stay"><input type="checkbox" id="stay" checked />Stay signed in</label>
+    <a class="forgot" href="forgot-password.html">Forgot password?</a>
+  </div>
+
+  <button class="signin-btn" type="submit">SIGN IN</button>
+
+  <div class="foot">
+    DMS Version: 1.0
+  </div>
+</form>
+
+<script>
+  var DMS_URL = "dashboard.html";
+  var form = document.getElementById("login-form");
+  var username = document.getElementById("username");
+  var password = document.getElementById("password");
+  var userErr = document.getElementById("username-err");
+  var passErr = document.getElementById("password-err");
+
+  function clearError(input, err){ input.classList.remove("err"); err.classList.remove("show"); }
+  username.addEventListener("input", function(){ clearError(username, userErr); });
+  password.addEventListener("input", function(){ clearError(password, passErr); });
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var ok = true;
+    if (!username.value.trim()){ username.classList.add("err"); userErr.classList.add("show"); ok = false; }
+    if (!password.value.trim()){ password.classList.add("err"); passErr.classList.add("show"); ok = false; }
+    if (!ok){ (username.value.trim() ? password : username).focus(); return; }
+    window.location.href = encodeURI(DMS_URL);
+  });
+</script>
+</body>
+</html>
